@@ -8,11 +8,11 @@
 	</Manifest>
 	
 	<Runtime>
-		<Import assembly = "WF40.AddIn.dll"/>
+		<Import assembly = "SDWF4.AddIn.dll"/>
 	</Runtime>
 	
 	<Path name="/SharpDevelop/Workbench/DisplayBindings">
-		<DisplayBinding id="WFDesigner" type="Secondary" class="WF40.AddIn.WFSecondaryDisplayBinding" fileNamePattern="\.xaml$" insertbefore="WPFDesigner" />
+		<DisplayBinding id="WFDesigner" type="Secondary" class="SDWF4.WFSecondaryDisplayBinding" fileNamePattern="\.xaml$" insertbefore="WPFDesigner" />
 	</Path>
 	
 	<!-- Templates -->
