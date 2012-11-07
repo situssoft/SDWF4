@@ -1,0 +1,62 @@
+﻿<?xml version="1.0"?>
+<Template originator = "Christopher Hall">
+	
+	<!-- Template Header -->
+	<TemplateConfiguration>
+		<Name>Workflow Console Application</Name>
+		<Category>C#</Category>
+		<Subcategory>Workflow</Subcategory>
+		<Icon>C#.Project.DOSProject</Icon>
+		<Description>A blank Workflow Console Application</Description>
+		<SupportedTargetFrameworks>v4.0;v4.0Client</SupportedTargetFrameworks>
+	</TemplateConfiguration>
+	
+	<!-- Actions -->
+	<Actions>
+		<Open filename = "Program.cs"/>
+	</Actions>
+	
+	<!-- Template Content -->
+	<Project language = "C#">
+		<ProjectItems>
+			<Reference Include="System" />
+			<Reference Include="System.Data" />
+			<Reference Include="System.Xml" />
+			<Reference Include="System.ServiceModel" />
+			<Reference Include="System.ServiceModel.Activities" />
+			<Reference Include="System.Xaml" />
+			<Reference Include="System.Xml.Linq" />
+			<Reference Include="Microsoft.CSharp" />
+			<Reference Include="System.Activities" />
+		</ProjectItems>
+		
+		<PropertyGroup>
+			<OutputType>Exe</OutputType>
+			<AppDesignerFolder>Properties</AppDesignerFolder>
+		</PropertyGroup>
+
+		<Files>
+			<File name="Properties\AssemblyInfo.cs" src="DefaultAssemblyInfo.cs"/>
+			<File name="Program.cs"><![CDATA[${StandardHeader.C#}
+using System;
+using System.Linq;
+using System.Activities;
+using System.Activities.Statements;
+
+namespace ${StandardNamespace}
+{
+	class Program
+	{
+		public static void Main(string[] args)
+		{
+			WorkflowInvoker.Invoke(new Workflow1());
+		}
+	}
+}]]></File>
+		<File name="Workflow1.xaml" buildAction="XamlAppDef">
+			<![CDATA[
+<Activity mc:Ignorable="sap" x:Class="${StandardNamespace}.Workflow1" sap:VirtualizedContainerService.HintSize="240,240" mva:VisualBasic.Settings="Assembly references and imported namespaces for internal implementation" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mv="clr-namespace:Microsoft.VisualBasic;assembly=System" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:s1="clr-namespace:System;assembly=System" xmlns:s2="clr-namespace:System;assembly=System.Xml" xmlns:s3="clr-namespace:System;assembly=System.Core" xmlns:sad="clr-namespace:System.Activities.Debugger;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System.ServiceModel" xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System.Core" xmlns:scg3="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:sl="clr-namespace:System.Linq;assembly=System.Core" xmlns:st="clr-namespace:System.Text;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />			
+		]]></File>
+		</Files>
+	</Project>
+</Template>

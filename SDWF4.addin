@@ -1,0 +1,23 @@
+﻿<AddIn name        = "Windows Workflow 4.0"
+       author      = "Christopher Hall"
+       url         = ""
+       description = "WF 4.0 Projects and designer hosting">
+	
+	<Manifest>
+		<Identity name="Workflow40" />
+	</Manifest>
+	
+	<Runtime>
+		<Import assembly = "WF40.AddIn.dll"/>
+	</Runtime>
+	
+	<Path name="/SharpDevelop/Workbench/DisplayBindings">
+		<DisplayBinding id="WFDesigner" type="Secondary" class="WF40.AddIn.WFSecondaryDisplayBinding" fileNamePattern="\.xaml$" insertbefore="WPFDesigner" />
+	</Path>
+	
+	<!-- Templates -->
+	<Path name="/SharpDevelop/BackendBindings/Templates">
+		<Directory id="WorkflowDesigner" path="./Templates" />
+	</Path>
+	
+</AddIn>

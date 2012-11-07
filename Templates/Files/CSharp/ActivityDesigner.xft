@@ -1,0 +1,78 @@
+﻿<?xml version="1.0"?>
+<Template author="Christopher Hall" version="1.0">
+	
+	<Config
+		  name        = "Activity Designer"
+		  icon        = "C#.File.NewClass"
+		  category    = "C#"
+		  subcategory = "Workflow"
+		  defaultname = "ActivityDesigner${Number}.xaml"
+		  language    = "XML"/>
+	 
+	<Description>A designer to customize the design time appearance of an activity</Description>
+	
+	<References>
+		<Reference include="PresentationCore">
+			<RequiredTargetFramework>3.0</RequiredTargetFramework>
+		</Reference>
+		<Reference include="PresentationFramework">
+			<RequiredTargetFramework>3.0</RequiredTargetFramework>
+		</Reference>
+		<Reference include="WindowsBase">
+			<RequiredTargetFramework>3.0</RequiredTargetFramework>
+		</Reference>
+		<Reference include="System.Activities.Presentation" />
+	</References>
+
+	<!--
+	Special new file templates:
+		${StandardNamespace}        -> Standardnamespace of the current project or FileNameWithoutExtension
+		${FullName}                 -> Full generated path name
+		${FileName}                 -> File name with extension
+		${FileNameWithoutExtension} -> File name without extension
+		${Extension}                -> Extension in the form ".cs"
+		${Path}                     -> Full path of the file
+		${ClassName}                -> Class name (generally FileNameWithoutExtension w/o 'bad' characters)
+	-->
+
+	<Files>
+		<File name="${FullName}" buildAction="Page" language="XML"><![CDATA[<sap:ActivityDesigner x:Class="${StandardNamespace}.${FileNameWithoutExtension}"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+    xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation">
+    <Grid>
+        
+    </Grid>
+</sap:ActivityDesigner>]]></File>
+		<File name="${FullName}.cs" SubType="Code" DependentUpon="${FullName}"><![CDATA[${StandardHeader.C#}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace ${StandardNamespace}
+{
+    // Interaction logic for ${FileName}
+    public partial class ${FileNameWithoutExtension}
+    {
+        public ${FileNameWithoutExtension}()
+        {
+            InitializeComponent();
+        }
+    }
+}]]></File>
+	</Files>
+	
+	<AdditionalOptions/>
+</Template>
+
