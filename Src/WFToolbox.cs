@@ -228,33 +228,40 @@ namespace SDWF4
 			{
 				// FOC the category for this assembly.
 				var cat = Control.Categories.FirstOrDefault(ct => ct.CategoryName == c.ProjectContent.AssemblyName);
-				if (cat == null)
-				{
-					cat = new ToolboxCategory(c.ProjectContent.AssemblyName);
-					Control.Categories.Add(cat);
-				}
-				else{
-					cat.Tools.Clear();
-				}
-				// Add the toolbox item for the class
 				var p = (CompilableProject)c.ProjectContent.Project;
-				// Attempt to load the assembly without locking the file.
-				// NB: This is far from ideal. We are reloading the output assemblies every time we build
-				// but we are not using an app domain through which to unload. Room for improvement here.
-				String hash = GetHash(p.OutputAssemblyFullPath);
-				Assembly asm = null;
-				if (loadedAssemblies.ContainsKey(hash)){
-					asm = loadedAssemblies[hash];
-				}
-				else{
-					asm = Assembly.Load(File.ReadAllBytes(p.OutputAssemblyFullPath));
-					loadedAssemblies[hash] = asm;
-				}
-				if (asm != null) {
-					var t = asm.GetType(c.FullyQualifiedName);
-					if (!cat.Tools.Any(ti => ti.Type == t))
-						cat.Add(new ToolboxItemWrapper(t,c.Name));
-				}
+                if (p != null)
+                {
+                    if (cat == null)
+                    {
+                        cat = new ToolboxCategory(c.ProjectContent.AssemblyName);
+                        Control.Categories.Add(cat);
+                    }
+                    else
+                    {
+                        cat.Tools.Clear();
+                    }
+                    // Add the toolbox item for the class
+                    // Attempt to load the assembly without locking the file.
+                    // NB: This is far from ideal. We are reloading the output assemblies every time we build
+                    // but we are not using an app domain through which to unload. Room for improvement here.
+                    String hash = GetHash(p.OutputAssemblyFullPath);
+                    Assembly asm = null;
+                    if (loadedAssemblies.ContainsKey(hash))
+                    {
+                        asm = loadedAssemblies[hash];
+                    }
+                    else
+                    {
+                        asm = Assembly.Load(File.ReadAllBytes(p.OutputAssemblyFullPath));
+                        loadedAssemblies[hash] = asm;
+                    }
+                    if (asm != null)
+                    {
+                        var t = asm.GetType(c.FullyQualifiedName);
+                        if (!cat.Tools.Any(ti => ti.Type == t))
+                            cat.Add(new ToolboxItemWrapper(t, c.Name));
+                    }
+                }
 			}
 		}
 	}
