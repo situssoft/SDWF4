@@ -221,47 +221,40 @@ namespace SDWF4
 		}
 						
 		internal ToolboxControl Control { get; private set; }
-		Dictionary<String,Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
 		internal void Update(List<IClass> classes)
 		{
-			foreach(IClass c in classes)
+			// Get the list of proejcts that need reloading.
+			var projectContents = (from c in classes select c.ProjectContent).Distinct();
+			// Reload the assemblies and clear/create toolbox categories
+			foreach(var pc in projectContents)
 			{
-				// FOC the category for this assembly.
-				var cat = Control.Categories.FirstOrDefault(ct => ct.CategoryName == c.ProjectContent.AssemblyName);
-				var p = (CompilableProject)c.ProjectContent.Project;
-                if (p != null)
-                {
+				if (pc.Project != null)
+				{
+					var cp = (CompilableProject)pc.Project;
+					var cat = Control.Categories.FirstOrDefault(ct => ct.CategoryName == cp.AssemblyName);
                     if (cat == null)
                     {
-                        cat = new ToolboxCategory(c.ProjectContent.AssemblyName);
+                        cat = new ToolboxCategory(cp.AssemblyName);
                         Control.Categories.Add(cat);
                     }
                     else
                     {
                         cat.Tools.Clear();
                     }
-                    // Add the toolbox item for the class
-                    // Attempt to load the assembly without locking the file.
-                    // NB: This is far from ideal. We are reloading the output assemblies every time we build
-                    // but we are not using an app domain through which to unload. Room for improvement here.
-                    String hash = GetHash(p.OutputAssemblyFullPath);
                     Assembly asm = null;
-                    if (loadedAssemblies.ContainsKey(hash))
-                    {
-                        asm = loadedAssemblies[hash];
-                    }
-                    else
-                    {
-                        asm = Assembly.Load(File.ReadAllBytes(p.OutputAssemblyFullPath));
-                        loadedAssemblies[hash] = asm;
-                    }
+                    // Overwrite the assembly in the cache, we need to reload as we have rebuilt (memory will be used!).
+                    asm = Assembly.Load(File.ReadAllBytes(cp.OutputAssemblyFullPath));
                     if (asm != null)
                     {
-                        var t = asm.GetType(c.FullyQualifiedName);
-                        if (!cat.Tools.Any(ti => ti.Type == t))
-                            cat.Add(new ToolboxItemWrapper(t, c.Name));
+                    	var tbItems = from tbc in classes where tbc.ProjectContent.AssemblyName == asm.GetName().Name select tbc;
+                    	foreach(var cl in tbItems)
+                        {
+                            var t = asm.GetType(cl.FullyQualifiedName);
+                            if (!cat.Tools.Any(ti => ti.Type == t))
+                                cat.Add(new ToolboxItemWrapper(t, cl.Name));
+                        }
                     }
-                }
+				}
 			}
 		}
 	}

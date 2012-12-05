@@ -47,6 +47,8 @@ namespace SDWF4
 		{
 			var classes = ScanProjectAssemblies();
 			toolbox.Update(classes);
+
+            // TODO: Need to figure out how to refresh the designer when toolbox items have been updated
 		}
 
 		public override void Dispose()
@@ -77,10 +79,6 @@ namespace SDWF4
 			
 			foreach (IProjectContent pc in AllProjectContentsWithReferences) {
 				if (pc.Project == null) {
-					ReflectionProjectContent rpc = pc as ReflectionProjectContent;
-					if (rpc == null)
-						continue;
-					if (rpc.IsGacAssembly)
 						continue;
 				}
 				foreach (IClass c in pc.Classes) {
@@ -114,6 +112,7 @@ namespace SDWF4
 			} 
 			else 
 			{
+                // Handle a new file being saved.
 				_stream.Position = 0;
 				using (var reader = new StreamReader(new UnclosableStream(_stream))) {
 					using (var writer = new StreamWriter(stream)) {
