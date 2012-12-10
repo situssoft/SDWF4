@@ -242,16 +242,19 @@ namespace SDWF4
                         cat.Tools.Clear();
                     }
                     Assembly asm = null;
-                    // Overwrite the assembly in the cache, we need to reload as we have rebuilt (memory will be used!).
-                    asm = Assembly.Load(File.ReadAllBytes(cp.OutputAssemblyFullPath));
-                    if (asm != null)
+                    if (File.Exists(cp.OutputAssemblyFullPath))
                     {
-                    	var tbItems = from tbc in classes where tbc.ProjectContent.AssemblyName == asm.GetName().Name select tbc;
-                    	foreach(var cl in tbItems)
+                        // Overwrite the assembly in the cache, we need to reload as we have rebuilt (memory will be used!).
+                        asm = Assembly.Load(File.ReadAllBytes(cp.OutputAssemblyFullPath));
+                        if (asm != null)
                         {
-                            var t = asm.GetType(cl.FullyQualifiedName);
-                            if (!cat.Tools.Any(ti => ti.Type == t))
-                                cat.Add(new ToolboxItemWrapper(t, cl.Name));
+                            var tbItems = from tbc in classes where tbc.ProjectContent.AssemblyName == asm.GetName().Name select tbc;
+                            foreach (var cl in tbItems)
+                            {
+                                var t = asm.GetType(cl.FullyQualifiedName);
+                                if (!cat.Tools.Any(ti => ti.Type == t))
+                                    cat.Add(new ToolboxItemWrapper(t, cl.Name));
+                            }
                         }
                     }
 				}
